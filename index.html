@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <title>TIT Currency Converter</title>
+    <script>
+        function hello() {
+                alert('Guru-B says,thanks for using TIT Currency converter.');
+            }
+        document.addEventListener('DOMContentLoaded', function() {
+        // Disable the submit button by default
+            document.querySelector('#submit').disabled = true;
+        // Enable button only if there is text in the input field
+                document.querySelector('#currency').onkeyup = () => {
+                    if (document.querySelector('#currency').value.length > 0)
+                        document.querySelector('#submit').disabled = false;
+                    else
+                        document.querySelector('#submit').disabled = true;
+                };
+        //Calling our API from Fixer    
+            document.querySelector('form').onsubmit = function() {
+                fetch("http://data.fixer.io/api/latest?access_key=57b1f939eb91f4e3886e68a69f19fe00")
+                .then(response => response.json())
+                .then(data => {
+                    const currency = document.querySelector('#currency').value.toUpperCase();
+                    const rate = data.rates[currency];
+                    if (rate !== undefined) {
+                        const result = `1 EUR is equal to ${rate.toFixed(3)} ${currency}`;
+                        document.querySelector('#result').innerHTML = result;
+                    } else {
+                        document.querySelector('#result').innerHTML = 'Invalid currency.';
+                    }
+                // Clear input field and disable button again
+                    document.querySelector('#currency').value = '';
+                    document.querySelector('#submit').disabled = true;
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+                return false;
+            }
+        });
+    </script>
+    <style>
+        body{
+            //background-color: skyblue;
+            background-image: url('tit5.jpeg');
+            //background-position: center;
+            background-size: 480px;
+            background-attachment: scroll;
+            text-align: center;
+        }
+        form{
+            text-align: center;
+            font-size: 72px;
+        }
+        input{
+            font-size: 40px;
+        }
+        div{
+            text-align: center;
+            color: darkgreen;
+            font-size: 72px;
+            background-color: ghostwhite;
+        }
+        h1{
+            text-align: center;
+            font-size: 72px;
+            color: dodgerblue;
+            //background-color: lightgrey;
+        }
+        input{
+            color: green;
+        }
+        img{
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            z-index: -1;
+        }
+        .button {
+            background-color: dodgerblue;
+            color: white;
+            text-align: center;
+            font-size: 40px;
+        }
+        .button:hover {
+            background-color: #4CAF50; /* Green */
+            color: white;
+}
+    </style>
+    <body>
+        <h1>TIT Currency Converter</h1>
+        <img src="tit8.jpeg" width="140" height="100">
+        <form>
+            <input id="currency" autofocus placeholder="Enter the currency.....">
+            <input id="submit" type="submit" value="Convert Now">
+        </form>
+        <div id="result">Converting from Euro to any currency.
+        </div>
+        <button class="button" onclick="hello()">Please click me.</button>
+    </body>
+</html>
